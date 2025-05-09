@@ -1,117 +1,132 @@
-// detail.tsx
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from expo vector icons
+import { Ionicons } from '@expo/vector-icons';
+
+import GradientBackground from '../components/stuff/globalstyle';
+import Description from '../components/detail/Description';
+import Index from '../components/detail/Index';
 
 const Detail = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('Description');
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#3B82F6" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Detail Course</Text>
-      </View>
+    <GradientBackground>
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Header */}
+        <View style={styles.headerRow}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="#374151" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Detail Course</Text>
+          <View style={{ width: 24 }} />
+        </View>
 
-      <View style={styles.tabs}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'Description' && styles.activeTab]}
-          onPress={() => setActiveTab('Description')}
-        >
-          <Text style={[styles.tabText, activeTab === 'Description' && styles.activeTabText]}>Description</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'Index' && styles.activeTab]}
-          onPress={() => setActiveTab('Index')}
-        >
-          <Text style={[styles.tabText, activeTab === 'Index' && styles.activeTabText]}>Index</Text>
-        </TouchableOpacity>
-      </View>
+        {/* Tabs */}
+        <View style={styles.tabs}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'Description' && styles.activeTab]}
+            onPress={() => setActiveTab('Description')}
+          >
+            <Text style={[styles.tabText, activeTab === 'Description' && styles.activeTabText]}>
+              Description
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'Index' && styles.activeTab]}
+            onPress={() => setActiveTab('Index')}
+          >
+            <Text style={[styles.tabText, activeTab === 'Index' && styles.activeTabText]}>
+              Index
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.content}>
-        {activeTab === 'Description' ? (
-          <Text style={styles.description}>
-            This is the description of the material. It will contain detailed information about the course.
-          </Text>
-        ) : (
-          <Text style={styles.index}>Index Content will be displayed here.</Text>
-        )}
-      </View>
-      <TouchableOpacity 
-        style={styles.letsGoButton} 
-        onPress={() => router.push('/_tab/material')}  // Navigate to material.tsx
-      >
-        <Text style={styles.letsGoText}>Let's Go</Text>
-      </TouchableOpacity>
-    </View>
+        {/* Content */}
+        <View style={styles.card}>
+          {activeTab === 'Description' ? <Description /> : <Index />}
+        </View>
+
+        {/* CTA Button */}
+        <TouchableOpacity
+          style={styles.letsGoButton}
+          onPress={() => router.push('/_tab/material')}
+        >
+          <Text style={styles.letsGoText}>Let's Go</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </GradientBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    paddingBottom: 32,
   },
-  header: {
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: 12,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
-  backButton: {
-    marginRight: 16,
-  },
-  headerText: {
-    fontSize: 24,
+  headerTitle: {
+    fontSize: 18,
     fontWeight: '700',
-    color: '#111827',
+    color: '#065F46',
+    textAlign: 'center',
+    flex: 1,
   },
   tabs: {
     flexDirection: 'row',
-    marginBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    marginBottom: 12,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 8,
   },
   tab: {
-    paddingVertical: 10,
     flex: 1,
+    paddingVertical: 10,
     alignItems: 'center',
-  },
-  tabText: {
-    fontSize: 16,
-    color: '#6B7280',
+    borderRadius: 8,
   },
   activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#3B82F6',
+    backgroundColor: '#D1FAE5',
+  },
+  tabText: {
+    fontSize: 14,
+    color: '#6B7280',
   },
   activeTabText: {
-    color: '#3B82F6',
+    color: '#065F46',
+    fontWeight: '600',
   },
-  content: {
-    paddingTop: 16,
-  },
-  description: {
-    fontSize: 16,
-    color: '#111827',
-  },
-  index: {
-    fontSize: 16,
-    color: '#111827',
+  card: {
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
   },
   letsGoButton: {
-    marginTop: 20,
-    backgroundColor: '#3B82F6',
+    backgroundColor: '#10B981',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
+    elevation: 4,
   },
   letsGoText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },
